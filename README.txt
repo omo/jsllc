@@ -1,5 +1,5 @@
 
-* JSBackend : toy llvm backend for javascript
+* JSBackend : toy javascript backend for llvm
 
 components:
 - jsllc : llc dialect to (only) use JSBackend.
