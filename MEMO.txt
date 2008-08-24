@@ -1,0 +1,137 @@
+
+* TODO
+
++ 関数定義
+> ローカル変数
+  + stub
+  + 単体 alloca
+  + 配列 alloca
+  + 構造体 alloca
+  - 名前に . が入るのをなんとかする
+- phi node
+  - どうやるとできる?
+    - 現状の for loop は store しちゃってる
+- 定数
+  + 整数
+  - 浮動小数
+  - もっとややこしいの
+- load
++ store
+- 四則演算
+- 制御構造
+  - if/else
+  - for
+  - while
+  - do/while
+  - switch
+- 関数呼び出し
+  - 引数
+- 構造体
+  - ローカル
+  - 引数
+  - 戻り値
+  - ポインタ
+- ポインタ
+- 配列
+- 配列の配列
+- 関数ポインタ
+- キャスト
+- 外部関数 (宣言)
+- グローバル変数
+
+- リンク
+
+
+------
+
+int addition_and_multiplication() {
+  int a = 1;
+  int b = 2;
+  int c = a + b;
+  return c*2;
+}
+
+----
+
+function addition_and_multiplication() {
+  var a;
+  a = 1;
+  var b;
+  b = 2;
+  var c;
+  c = a + b;
+  var mul = c*2;
+  return mul;
+}
+
+----
+- 配列アクセスは runtime に.
+- 構造体もかなー...
+----
+
+* ポインタ
+- adaptor object
+  function Ptr(ref) {
+    this.__ref = ref;
+  }
+
+  function PtrToArray(ref, arr, idx) {
+    this.__ref = ref;
+    this.__arr = arr;
+    this.__idx = idx;
+  }
+
+- isDirectAlloca の値は特別扱い
+  - load でそのまま値を代入 (__ref を辿らない)
+  - 値として出てきたら Ptr でラップする (つじつまあわせで indirect する)
+
+* 分岐/スコープ
+
+- basic block の名前でローカル関数をつくる
+- 分岐は __next に行き先ブロック関数を代入
+- return は __next に null;
+
+function foo() {
+   var __label_1 = function() {
+     alert("label_1");
+     __next = __label_2;
+   };
+   var __label_2 = function() {
+     alert("label_2");
+     __next = null;
+   };
+
+   var __next = __label_1;
+   while (__next) {
+     var __tocall = __next;
+     __tocall();
+   }
+}
+
+------
+switch/case が自然という説
+
+function foo() {
+   var __bb = 0;
+   while(0 <= __bb) {
+     switch(__bb) {
+     case 0:
+       alert("label_1");
+       __bb = 1;
+       break;
+     case 1:
+       alert("label_2");
+       __bb = -1;
+       break;
+     }
+   }
+}
+
+* 制限
+- キャスト -> 型情報, サイズとかに依存されるとアウト.
+  - union も当然ダメ.
+- アドレスに細工はアウト
+  - 下位ビットになんか入れとくとか
+
+http://llvm.org/ : LLVM 公式サイト
+http://llvm.org/devmtg/2008-08/ : 2008 LLVM Developers' Meeting (スライドとビデオ)

@@ -1,0 +1,33 @@
+<html>
+<head>
+  <script src="prototype.js" ></script>
+  <script src="jsbe.js" ></script>
+  <script src="hello_opt.js" ></script>
+  <script>
+  function hello_onload() {
+     __JSBE.print = function(x) {
+       var e = $('console')
+       e.innerHTML = e.innerHTML + x;
+     }
+   }
+
+   function hello_eval_form() {
+       eval($('toeval').value);
+   }
+  </script>
+</head>
+<body onload="hello_onload();">
+<pre id="console"
+     style="font-size:40; font-family:verdana; font-weight:bold; background-color: #ccc;
+            height: 5em; overflow:auto">
+&nbsp;
+</pre>
+<form>
+  <textarea id="toeval"
+            style="font-size:16; font-family:verdana; width:80%;">
+  </textarea>
+  <br />
+  <input type="button" onclick="hello_eval_form()" value="eval!"/>
+</form>
+</body>
+</html>
