@@ -11,7 +11,7 @@ __JSBE = {
     this.element_at = function() {
       var sum = 0;
       for (var i=0; i<arguments.length; i++) { sum += arguments[i]; }
-      return new __JSBE.MemoryArray(this.arr, sum);
+      return new __JSBE.MemoryArray(this.arr, this.off + sum);
     };
     this.ref = function() {
       var toret = this.arr[this.off];
@@ -37,7 +37,7 @@ __JSBE = {
  nPrinted: 0,
 
  print: function(val) {
-    if (10 < __JSBE.nPrinted++) { throw "Detect Loop!"; }
+    if (1000 < __JSBE.nPrinted++) { throw "Detect Loop!"; }
     console.log(val);
  },
 
