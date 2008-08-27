@@ -231,7 +231,7 @@ namespace jsbackend_impl { // anonymous namespace generates weird sybol, so we g
 
       for (inst_iterator I = inst_begin(&F), E = inst_end(&F); I != E; ++I) {
         if (isa<PHINode>(*I)) {
-          m_Out << "  var " << encodeName(&(*I)) << ";\n";
+          m_Out << "  var " << encodeName(&(*I)) << "_phitmp;\n";
         }
       }
 
@@ -283,7 +283,7 @@ namespace jsbackend_impl { // anonymous namespace generates weird sybol, so we g
         Value *IV = PN->getIncomingValueForBlock(CurBlock);
         if (!isa<UndefValue>(IV)) {
           m_Out << "      "
-                << encodeName(I) << " = " << makeValueRepr(IV)
+                << encodeName(I) << "_phitmp = " << makeValueRepr(IV)
                 << ";\n";
         }
       }
@@ -405,9 +405,7 @@ namespace jsbackend_impl { // anonymous namespace generates weird sybol, so we g
     }
 
     void visitPHINode(PHINode &I) {
-#if 0 // already define at the top of the function
-      m_Out << "      var " << encodeName(&I) << ";\n";
-#endif
+			m_Out << "      var " << encodeName(&I) << " = " << encodeName(&I) << "_phitmp;\n";
     }
 
     std::string makeBinaryOperator(int opcode) {
